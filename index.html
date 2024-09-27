@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequential Image Generation</title>
+    <style>
+        img {
+            width: 50%;
+            margin-bottom: 10px; /* Adds space below each image */
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Container to hold the images -->
+    <div id="images-container"></div>
+
+    <!-- Button to generate the images -->
+    <button onclick="generateImages()">Generate Images</button>
+
+    <!-- JavaScript for dynamic image generation -->
+    <script>
+        // Function to generate images dynamically
+        function generateImages() {
+            const container = document.getElementById('images-container');
+            container.innerHTML = ''; // Clear any existing images
+
+            const baseUrl = "https://gietuerp.in/StudentDocuments/";
+            const prefix = "24CSE"; // Prefix for the images
+            const imgSuffix = ".JPG"; // Image file extension
+            
+            const startNumber = 1; // Starting number for images
+            const totalImages = 200; // Set the total number of images to generate
+
+            // Loop to generate images from startNumber to startNumber + totalImages
+            for (let i = startNumber; i < startNumber + totalImages; i++) {
+                // Format the serial number to have leading zeros (e.g., 015, 016, etc.)
+                const serialNumber = String(i).padStart(3, '0');
+
+                // Construct the image URL
+                const imgUrl = `${baseUrl}${prefix}${serialNumber}/${prefix}${serialNumber}${imgSuffix}`;
+
+                // Create image element
+                const img = document.createElement('img');
+                img.src = imgUrl;
+                img.alt = `Image ${serialNumber}`;
+
+                // Append each image to the container
+                container.appendChild(img);
+            }
+        }
+    </script>
+
+</body>
+</html>
