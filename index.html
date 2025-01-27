@@ -7,12 +7,28 @@
     <style>
         img {
             width: 50%;
-            margin-bottom: 10px; /* Adds space below each image */
+            margin-bottom: 10px;
         }
         button {
             margin-top: 20px;
             padding: 10px;
             font-size: 16px;
+        }
+        form {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        #result {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: blue;
+        }
+        .batch-heading {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -21,20 +37,66 @@
     <!-- Container to hold the images -->
     <div id="images-container"></div>
 
-    <!-- Button to generate the images -->
-    <button onclick="generateImages()">Generate Images</button>
+    <!-- Buttons for different batches -->
+    <div class="batch-heading">22 Batch</div>
+    <button onclick="generateImages('22BAG')">22AG Batch</button>
+    <button onclick="generateImages('22ECE')">22ECE Batch</button>
+    <button onclick="generateImages('22ME')">22ME Batch</button>
+    <button onclick="generateImages('22EEE')">22EEE Batch</button>
+    <button onclick="generateImages('22EE')">22EE Batch</button>
+    <button onclick="generateImages('22BT')">22BT Batch</button>
+    <button onclick="generateImages('22MCA')">22MCA Batch</button>
+    <button onclick="generateImages('22BCA')">22BCA Batch</button>
+    <button onclick="generateImages('22BBA')">22BBA Batch</button>
+    <button onclick="generateImages('22MBA')">22MBA Batch</button>
+    <button onclick="generateImages('22Cv')">22CIVIL Batch</button>
 
-    <!-- JavaScript for dynamic image generation -->
+    <div class="batch-heading">23 Batch</div>
+    <button onclick="generateImages('23BAG')">23AG Batch</button>
+    <button onclick="generateImages('23ECE')">23ECE Batch</button>
+    <button onclick="generateImages('23ME')">23ME Batch</button>
+    <button onclick="generateImages('23EEE')">23EEE Batch</button>
+    <button onclick="generateImages('23EE')">23EE Batch</button>
+    <button onclick="generateImages('23BT')">23BT Batch</button>
+    <button onclick="generateImages('23MCA')">23MCA Batch</button>
+    <button onclick="generateImages('23BCA')">23BCA Batch</button>
+    <button onclick="generateImages('23BBA')">23BBA Batch</button>
+    <button onclick="generateImages('23MBA')">23MBA Batch</button>
+    <button onclick="generateImages('23Cv')">23CIVIL Batch</button>
+
+    <div class="batch-heading">24 Batch</div>
+    <button onclick="generateImages('24BAG')">24AG Batch</button>
+    <button onclick="generateImages('24ECE')">24ECE Batch</button>
+    <button onclick="generateImages('24ME')">24ME Batch</button>
+    <button onclick="generateImages('24EEE')">24EEE Batch</button>
+    <button onclick="generateImages('24EE')">24EE Batch</button>
+    <button onclick="generateImages('24BT')">24BT Batch</button>
+    <button onclick="generateImages('24MCA')">24MCA Batch</button>
+    <button onclick="generateImages('24BCA')">24BCA Batch</button>
+    <button onclick="generateImages('24BBA')">24BBA Batch</button>
+    <button onclick="generateImages('24MBA')">24MBA Batch</button>
+    <button onclick="generateImages('24Cv')">24CIVIL Batch</button>
+
+    <!-- Form to enter roll number and get the URL -->
+    <form onsubmit="getImageUrl(event)">
+        <label for="rollNumber">Enter Roll Number:</label>
+        <input type="text" id="rollNumber" placeholder="e.g., 22CSE001" required>
+        <button type="submit">Get Image</button>
+    </form>
+
+    <!-- Container to display the generated URL or image -->
+    <div id="result"></div>
+
+    <!-- JavaScript for dynamic image generation and URL generation -->
     <script>
         // Function to generate images dynamically
-        function generateImages() {
+        function generateImages(batchPrefix) {
             const container = document.getElementById('images-container');
-            container.innerHTML = ''; // Clear any existing images
+            container.innerHTML = `<div class='batch-heading'>Images for ${batchPrefix} Batch</div>`; // Show the selected batch name
 
             const baseUrl = "https://gietuerp.in/StudentDocuments/";
-            const prefix = "22CSE"; // Prefix for the images
             const imgSuffix = ".JPG"; // Image file extension
-            
+
             const startNumber = 1; // Starting number for images
             const totalImages = 1200; // Set the total number of images to generate
 
@@ -44,7 +106,7 @@
                 const serialNumber = String(i).padStart(3, '0');
 
                 // Construct the image URL
-                const imgUrl = `${baseUrl}${prefix}${serialNumber}/${prefix}${serialNumber}${imgSuffix}`;
+                const imgUrl = `${baseUrl}${batchPrefix}${serialNumber}/${batchPrefix}${serialNumber}${imgSuffix}`;
 
                 // Create image element
                 const img = document.createElement('img');
@@ -54,6 +116,43 @@
                 // Append each image to the container
                 container.appendChild(img);
             }
+        }
+
+        // Function to get the image URL based on the roll number
+        function getImageUrl(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const rollNumberInput = document.getElementById('rollNumber').value;
+            const baseUrl = "https://gietuerp.in/StudentDocuments/";
+            const imgSuffix = ".JPG"; // Image file extension
+
+            // Construct the image URL
+            const imgUrl = `${baseUrl}${rollNumberInput}/${rollNumberInput}${imgSuffix}`;
+
+            // Display the image in the result container
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `<img src="${imgUrl}" alt="Image for ${rollNumberInput}" />`;
+
+            // Optionally, send the URL to the server
+            sendUrlToServer(imgUrl);
+        }
+
+        // Function to send the URL to the server
+        function sendUrlToServer(url) {
+            fetch('/save-url', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageUrl: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error sending URL to server:', error);
+            });
         }
     </script>
 
