@@ -30,6 +30,10 @@
             font-weight: bold;
             text-decoration: underline;
         }
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -39,6 +43,7 @@
 
     <!-- Buttons for different batches -->
     <div class="batch-heading">22 Batch</div>
+    <button onclick="generateImages('22CSE')">22CSE Batch</button>
     <button onclick="generateImages('22BAG')">22AG Batch</button>
     <button onclick="generateImages('22ECE')">22ECE Batch</button>
     <button onclick="generateImages('22ME')">22ME Batch</button>
@@ -52,6 +57,7 @@
     <button onclick="generateImages('22Cv')">22CIVIL Batch</button>
 
     <div class="batch-heading">23 Batch</div>
+    <button onclick="generateImages('23CSE')">23CSE Batch</button>
     <button onclick="generateImages('23BAG')">23AG Batch</button>
     <button onclick="generateImages('23ECE')">23ECE Batch</button>
     <button onclick="generateImages('23ME')">23ME Batch</button>
@@ -65,6 +71,7 @@
     <button onclick="generateImages('23Cv')">23CIVIL Batch</button>
 
     <div class="batch-heading">24 Batch</div>
+    <button onclick="generateImages('24CSE')">24CSE Batch</button>
     <button onclick="generateImages('24BAG')">24AG Batch</button>
     <button onclick="generateImages('24ECE')">24ECE Batch</button>
     <button onclick="generateImages('24ME')">24ME Batch</button>
@@ -113,8 +120,20 @@
                 img.src = imgUrl;
                 img.alt = `Image ${serialNumber}`;
 
-                // Append each image to the container
-                container.appendChild(img);
+                // Create a container for the image and roll number
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image-container'); // Add class for styling
+
+                // Append image to the container
+                imageContainer.appendChild(img);
+
+                // Create a paragraph to display the roll number under the image
+                const rollNumberText = document.createElement('p');
+                rollNumberText.textContent = `${batchPrefix}${serialNumber}`;
+                imageContainer.appendChild(rollNumberText);
+
+                // Append the container to the main container
+                container.appendChild(imageContainer);
             }
         }
 
